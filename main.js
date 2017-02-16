@@ -1,10 +1,14 @@
 const scrubMedia = function (elem) {
-  let scrollToValue = 0;
-  let scrollToTarget = scrollToValue;
-  const videoElem = elem.querySelector('video');
+  let num = 0,
+      scrubToValue = 0,
+      scrubToTarget = scrubToValue,
+      needForRAF = true;
+  
+  const videoElem = elem.querySelector('video'),
+        clipLength = 2;
 
 
-  const createBlob = function () {
+  const setupBlobs = function () {
     const dataSrc = videoElem.getAttribute('data-src');
 
     const req = new XMLHttpRequest();
@@ -33,23 +37,29 @@ const scrubMedia = function (elem) {
   };
 
 
-  const setupBlobs = function () {
-    createBlob(elem);
-  };
-
-
-  const scrubVideo = function (event) {
-    const num = event.clientX / viewport.width();
-    const scrubToValue = Math.round(num * 100) / 100;
+  const update = function () {
+    needForRAF = true; // rAF now consumes the movement instruction so a new one can come
 
     // Set currentTime
-    videoElem.currentTime = (scrubToValue * 2);
-  };
+    videoElem.currentTime = (scrubToValue * clipLength);
+  }
+
+
+  const mouseMove = function (event) {
+    event.preventDefault();
+
+    num = event.clientX / viewport.width();
+    scrubToValue = Math.round(num * 100) / 100;
+
+    if (needForRAF) {
+      needForRAF = false;            // no need to call rAF up until next frame
+      requestAnimationFrame(update); // request 60fps animation
+    }; 
+  }
 
 
   const mouseListener = function () {
-    elem.addEventListener('mousemove',
-      event => scrubVideo(event), false);
+    elem.addEventListener('mousemove', mouseMove, false);
   };
 
 
