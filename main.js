@@ -42,6 +42,7 @@ const scrubMedia = function (elem) {
 
     // Set currentTime
     videoElem.currentTime = (scrubToValue * clipLength);
+    videoElem.pause();
   }
 
 
