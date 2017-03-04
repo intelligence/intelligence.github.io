@@ -1,30 +1,82 @@
-html,
-body {
+html, body, .wrap {
   margin: 0;
   padding: 0;
-}
-
-.project {
+  height: 100%;
   width: 100%;
-  position: relative;
-  overflow: hidden;
-  line-height: 0;
-  background: #000;
 }
 
-.project__inner {
-  position: absolute;
+html {
+  overflow: hidden;
+  font-size: 20px;
+  font-family: sans-serif;
+}
+
+/* body {
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+} */
+
+.wrap {
+  position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   width: 100%;
   height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 }
 
-.scrubMedia-video {
-  position: relative;
-  z-index: 5;
+.content {
+  height: 100vh;
   width: 100%;
-  object-fit: cover;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content:after {
+  counter-increment: section;
+  content: "Section " counter(section) "";
+}
+
+.preload {
+  background: green;
+  width: 100%;
+  height: 100%;
+  
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  display: none;
+}
+
+.init .preload {
+  display: flex;
+}
+
+.preload:after {
+  content: 'Preload';
+}
+
+.main {
+  counter-reset: section;
+  min-height: 100vh;
+}
+
+.init .main {
+  margin-top: 100vh;
+}
+
+.odd {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.even {
+  background: rgba(0, 0, 0, 0.15);
 }

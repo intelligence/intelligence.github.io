@@ -1,88 +1,55 @@
-const scrubMedia = function (elem) {
-  let num = 0,
-      scrubToValue = 0,
-      scrubToTarget = scrubToValue,
-      needForRAF = true;
-  
-  const videoElem = elem.querySelector('video'),
-        clipLength = 2;
+const splash = (function () {
+  let splashElement;
+  let splashHeight;
+  let context;
+  let working;
 
 
-  const setupBlobs = function () {
-    const dataSrc = videoElem.getAttribute('data-src');
-
-    const req = new XMLHttpRequest();
-    req.open('GET', dataSrc, true);
-    req.responseType = 'blob';
-
-    req.onload = function () {
-      // Onload is triggered even on 404
-      // so we need to check the status code
-      if (this.status === 200) {
-        const videoBlob = this.response;
-        const vid = URL.createObjectURL(videoBlob); // IE10+
-        // Video is now downloaded
-        // and we can set it as source on the video element
-        videoElem.src = vid;
-        setTimeout(() => {
-          videoElem.currentTime = 0.01;
-        }, 750);
+  const scrollUpdate = function () {
+    if ((context.pageYOffset || context.scrollTop) - (context.clientTop || 0) >= splashHeight) {
+      if (splashElement) { // why bother if it's already removed!
+        context.removeChild(splashElement);
+        splashElement = null;
+        document.body.classList.remove('init');
+        context.scrollTop = 1;
       }
-    };
-    req.onerror = function () {
-      // Error
-    };
-
-    req.send();
+    }
+    working = false;
   };
 
 
-  const update = function () {
-    needForRAF = true; // rAF now consumes the movement instruction so a new one can come
-
-    // Set currentTime
-    videoElem.currentTime = (scrubToValue * clipLength);
-    videoElem.pause();
-  }
-
-
-  const mouseMove = function (event) {
-    event.preventDefault();
-
-    num = event.clientX / viewport.width();
-    scrubToValue = Math.round(num * 100) / 100;
-
-    if (needForRAF) {
-      needForRAF = false;            // no need to call rAF up until next frame
-      requestAnimationFrame(update); // request 60fps animation
-    }; 
-  }
-
-
-  const mouseListener = function () {
-    elem.addEventListener('mousemove', mouseMove, false);
+  const resizeEvent = function () {
+    window.addEventListener('resize', () => {
+      if (splashElement) {
+        splashHeight = getSize(splashElement).height;
+      }
+    });
   };
 
 
-  const initScrubMedia = function () {
-    setupBlobs();
-    mouseListener();
+  const scrollEvent = function () {
+    context.addEventListener('scroll', () => {
+      if (!working) {
+        requestAnimationFrame(scrollUpdate);
+        working = true;
+      }
+    }, false);
   };
 
+
+  const initSplash = function () {
+    context = document.querySelectorAll('.wrap')[0];
+    splashElement = document.querySelectorAll('.preload')[0];
+
+    resizeEvent();
+    scrollEvent();
+
+    setTimeout(() => {
+      splashHeight = getSize(splashElement).height;
+    }, 500);
+  };
 
   return {
-    init: initScrubMedia,
+    init: initSplash,
   };
-};
-
-
-document.addEventListener('DOMContentLoaded', function(event) {
-  const videos = [];
-  const scrubElems = document.querySelectorAll('.js-scrubMedia');
-  if (scrubElems.length > 0) {
-    for (let i = 0; i < scrubElems.length; i += 1) {
-      videos[i] = scrubMedia(scrubElems[i]);
-      videos[i].init();
-    }
-  }
-});
+}());
