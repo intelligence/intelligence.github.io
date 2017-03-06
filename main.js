@@ -8,15 +8,15 @@ const splash = (function () {
 
   const scrollUpdate = function () {
     scrollValue.innerHTML = document.body.scrollTop;
-    console.log(document.body.scrollTop);
-    if ((context.pageYOffset || context.scrollTop) - (context.clientTop || 0) >= splashHeight) {
+    // console.log(document.body.scrollTop);
+    /* if ((context.pageYOffset || context.scrollTop) - (context.clientTop || 0) >= splashHeight) {
       if (splashElement) { // why bother if it's already removed!
         context.removeChild(splashElement);
         splashElement = null;
         document.body.classList.remove('init');
         context.scrollTop = 1;
       }
-    }
+    }*/
     working = false;
   };
 
