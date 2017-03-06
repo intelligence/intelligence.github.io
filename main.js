@@ -7,7 +7,8 @@ const splash = (function () {
   // console.log(scrollValue);
 
   const scrollUpdate = function () {
-    scrollValue.innerHTML = context.scrollTop;
+    scrollValue.innerHTML = document.body.scrollTop;
+    console.log(document.body.scrollTop);
     if ((context.pageYOffset || context.scrollTop) - (context.clientTop || 0) >= splashHeight) {
       if (splashElement) { // why bother if it's already removed!
         context.removeChild(splashElement);
@@ -30,7 +31,8 @@ const splash = (function () {
 
 
   const scrollEvent = function () {
-    context.addEventListener('scroll', () => {
+    window.addEventListener('scroll', () => {
+      console.log(document.body.scrollTop);
       if (!working) {
         requestAnimationFrame(scrollUpdate);
         working = true;
