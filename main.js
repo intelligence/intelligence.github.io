@@ -4,7 +4,7 @@ const splash = (function () {
   let context;
   let working;
   const scrollValue = document.getElementById('scrollTop');
-  //console.log(scrollValue);
+  console.log(scrollValue);
 
   const scrollUpdate = function () {
     scrollValue.innerHTML = context.scrollTop;
