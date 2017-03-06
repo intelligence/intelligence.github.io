@@ -3,10 +3,11 @@ const splash = (function () {
   let splashHeight;
   let context;
   let working;
-
+  const scrollValue = document.getElementById('scrollTop');
+  // console.log(scrollValue);
 
   const scrollUpdate = function () {
-    console.log(context.scrollTop);
+    scrollValue.innerHTML = context.scrollTop;
     if ((context.pageYOffset || context.scrollTop) - (context.clientTop || 0) >= splashHeight) {
       if (splashElement) { // why bother if it's already removed!
         context.removeChild(splashElement);
