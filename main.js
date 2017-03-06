@@ -4,19 +4,18 @@ const splash = (function () {
   let context;
   let working;
   const scrollValue = document.getElementById('scrollTop');
-  // console.log(scrollValue);
+  //console.log(scrollValue);
 
   const scrollUpdate = function () {
-    scrollValue.innerHTML = document.body.scrollTop;
-    // console.log(document.body.scrollTop);
-    /* if ((context.pageYOffset || context.scrollTop) - (context.clientTop || 0) >= splashHeight) {
+    scrollValue.innerHTML = context.scrollTop;
+    if ((context.pageYOffset || context.scrollTop) - (context.clientTop || 0) >= splashHeight) {
       if (splashElement) { // why bother if it's already removed!
         context.removeChild(splashElement);
         splashElement = null;
         document.body.classList.remove('init');
         context.scrollTop = 1;
       }
-    }*/
+    }
     working = false;
   };
 
@@ -31,8 +30,7 @@ const splash = (function () {
 
 
   const scrollEvent = function () {
-    window.addEventListener('scroll', () => {
-      console.log(document.body.scrollTop);
+    context.addEventListener('scroll', () => {
       if (!working) {
         requestAnimationFrame(scrollUpdate);
         working = true;
