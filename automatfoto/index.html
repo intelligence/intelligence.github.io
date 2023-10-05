@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:title" content="Europa Bar" />
+    <meta property="og:image" content="" />
+    <title>Europa Bar</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="animation-flash"></div>
+    <div class="container">
+      <div id="capture" class="capture">
+        <img src="nedladdning.jpeg" />
+      </div>
+      <div class="branding">
+        <div class="logo">
+          Bar Europa
+        </div>
+        <div class="qr-code">
+          QR Code
+        </div>
+      </div>
+    </div>
+  </body>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+  <script>
+
+    const file_name = window.location.search.replace(/\?/g, "");
+    console.log(file_name)
+    file = "https://storage.googleapis.com/safab-9af61.appspot.com/QR/" + file_name
+    var key = CryptoJS.enc.Utf8.parse(location.hash.substr(1));
+
+    $.get(file, function (data) {
+        var decrypted = CryptoJS.AES.decrypt(data, key, { mode: CryptoJS.mode.ECB });
+        $('html').css('background', "url(data:image/jpeg;base64," + decrypted.toString(CryptoJS.enc.Utf8) + ") #000 no-repeat center center fixed content-box")
+    });
+    
+    var keyBuf = new Buffer(key);
+    var inputStream = fs.createReadStream(file+"v");
+    var outputStream = fs.createWriteStream(file+"d");
+    var cipher = crypto.createDecipher("aes-128-ecb", keyBuf);
+
+    inputStream.on('data', function(data) {
+      var buf = new Buffer(cipher.update(data), 'binary');
+      outputStream.write(buf);
+    });
+
+    inputStream.on('end', function() {
+      try {
+        var buf = new Buffer(cipher.final('binary'), 'binary');
+        outputStream.write(buf);
+        outputStream.end();
+          
+        outputStream.on('close', function() {       
+        const introVideo=document.getElementById("introVideo");
+        introVideo.src = "data:video/mp4;base64,"+fs.readFileSync(file+"d", "base64")
+        introVideo.play()
+            
+        });
+        } catch(e) {
+        console.log(e)
+        }
+      });
+
+
+
+</script>
+</html>

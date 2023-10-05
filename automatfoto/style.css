@@ -1,0 +1,95 @@
+:root {
+  --color-black: #000;
+  --color-white: #fff;
+}
+
+html, body {
+  margin: 0;
+  font-size: 16px;
+  background-color: var(--color-black);
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.animation-flash {
+  background-color: var(--color-white);
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  opacity: 0;
+  animation-name: flash;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes flash {
+  35% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  65% {
+    opacity: 0;
+ }
+}
+
+.container {
+  padding: 2rem;
+  background-color: var(--color-white);
+  transform: translateY(100vh);
+  transition: transform 0.475s cubic-bezier(0.42, 0, 0.14, 0.99);
+  animation-name: moveIn;
+  animation-duration: 1s;
+  animation-delay: 0.75s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes moveIn {
+  0% {
+    transform: translateY(100vh);
+  }
+  100% {
+    transform: translateY(0);
+ }
+}
+
+.container.is-loaded {
+  transform: translateY(0);
+}
+
+.capture {
+  aspect-ratio: 688/905;
+  line-height: 0;
+  border: 1px solid var(--color-black);
+  height: 100%;
+}
+
+.capture img,
+.capture video {
+  max-height: calc(80vh - 200px);
+  width: auto;
+}
+
+@media only screen and (max-width: 768px) {
+  .capture img,
+  .capture video {
+    max-width: calc(90vw - 5rem);
+  }
+}
+
+.branding {
+  display: flex;
+  flex-direction: row;
+  padding: 1rem 1rem;
+  justify-content: space-between;
+}
+
