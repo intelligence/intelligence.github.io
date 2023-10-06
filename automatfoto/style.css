@@ -45,8 +45,33 @@ body {
 }
 
 .snapshot {
+  position: relative;
   padding: 2rem 1.4rem 0.5rem;
   background-color: var(--color-white);
+}
+
+.snapshot::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0.75rem;
+  height: 0.75rem;
+  background: var(--color-black);
+  border-radius: 100px;
+}
+
+.snapshot::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(50%, 50%);
+  width: 0.75rem;
+  height: 0.75rem;
+  background: var(--color-white);
+  border-radius: 100px;
 }
 
 @keyframes moveIn {
