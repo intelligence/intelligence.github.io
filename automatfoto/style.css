@@ -67,7 +67,7 @@ body {
   position: absolute;
   bottom: 0;
   left: 50%;
-  transform: translate(50%, 50%);
+  transform: translate(-50%, 50%);
   width: 0.75rem;
   height: 0.75rem;
   background: var(--color-white);
